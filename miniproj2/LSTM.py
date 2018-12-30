@@ -64,7 +64,7 @@ model.compile(loss='mae', optimizer='adam')
 
 
 print(model.summary())
-history = model.fit(x_train, y_train, BATCH_SIZE=BATCH_SIZE, epochs=NUM_EPOCHS, verbose=1, validation_data=(x_val, y_val))
+history = model.fit(x_train, y_train, batch_size=BATCH_SIZE, epochs=NUM_EPOCHS, verbose=1, validation_data=(x_val, y_val))
 
 pyplot.plot(history.history['loss'], label='train')
 pyplot.plot(history.history['val_loss'], label='test')
