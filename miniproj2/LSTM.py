@@ -50,21 +50,21 @@ y_total = np.concatenate([y_train, y_val, y_test], axis=None)
 In this part network is implemented 
 '''
 # parameters
-batch_size = 10
-n_epochs = 20
-hidden_size = 40
+BATCH_SIZE = 10
+NUM_EPOCHS = 20
+HIDDEN_SIZE = 40
 
 # keras modeling
 model = Sequential()
-model.add(LSTM(hidden_size,  input_shape=(TIMESTEPS, 8), return_sequences=True,activation='tanh', recurrent_activation='hard_sigmoid', use_bias=True, dropout=0.0, recurrent_dropout=0.0))
-model.add(LSTM(hidden_size, return_sequences=False,activation='tanh', recurrent_activation='hard_sigmoid', use_bias=True, dropout=0.0, recurrent_dropout=0.0))
+model.add(LSTM(HIDDEN_SIZE,  input_shape=(TIMESTEPS, 8), return_sequences=True,activation='tanh', recurrent_activation='hard_sigmoid', use_bias=True, dropout=0.0, recurrent_dropout=0.0))
+model.add(LSTM(HIDDEN_SIZE, return_sequences=False,activation='tanh', recurrent_activation='hard_sigmoid', use_bias=True, dropout=0.0, recurrent_dropout=0.0))
 # model.add(Flatten())
 model.add(Dense(1))
 model.compile(loss='mae', optimizer='adam')
 
 
 print(model.summary())
-history = model.fit(x_train, y_train, batch_size=batch_size, epochs=n_epochs, verbose=1, validation_data=(x_val, y_val))
+history = model.fit(x_train, y_train, BATCH_SIZE=BATCH_SIZE, epochs=NUM_EPOCHS, verbose=1, validation_data=(x_val, y_val))
 
 pyplot.plot(history.history['loss'], label='train')
 pyplot.plot(history.history['val_loss'], label='test')
@@ -74,14 +74,14 @@ pyplot.show()
 
 print('train loss history:', history.history["loss"])
 print('test loss history:', history.history["val_loss"])
-scores = model.evaluate(x_test, y_test, batch_size=batch_size, verbose=1)
+scores = model.evaluate(x_test, y_test, BATCH_SIZE=BATCH_SIZE, verbose=1)
 print('\nTest result loss: %.3f' % (scores))
 
 x_old =np.concatenate((x_train, x_val), axis=0)
-y_pred = model.predict(x_test, batch_size=batch_size)
-y_old = model.predict(x_old, batch_size=batch_size)
+y_pred = model.predict(x_test, BATCH_SIZE=BATCH_SIZE)
+y_old = model.predict(x_old, BATCH_SIZE=BATCH_SIZE)
 
-xc = range(n_epochs)
+xc = range(NUM_EPOCHS)
 plt.figure(1, figsize=(7, 5))
 plt.subplot(211)
 plt.plot(range(0, TRAIN_SIZE+VAL_SIZE), y_old, c='r', linewidth=3.0)
