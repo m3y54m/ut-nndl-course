@@ -24,7 +24,7 @@ y_val = []
 x_test = []
 y_test = []
 
-week = 8            # sample count for prediction
+week = 7            # sample count for prediction
 hour = 2            # which hour data ? (0-23) (not important)
 
 for i in range(train_c):
