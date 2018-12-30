@@ -74,12 +74,12 @@ pyplot.show()
 
 print('train loss history:', history.history["loss"])
 print('test loss history:', history.history["val_loss"])
-scores = model.evaluate(x_test, y_test, BATCH_SIZE=BATCH_SIZE, verbose=1)
+scores = model.evaluate(x_test, y_test, batch_size=BATCH_SIZE, verbose=1)
 print('\nTest result loss: %.3f' % (scores))
 
 x_old =np.concatenate((x_train, x_val), axis=0)
-y_pred = model.predict(x_test, BATCH_SIZE=BATCH_SIZE)
-y_old = model.predict(x_old, BATCH_SIZE=BATCH_SIZE)
+y_pred = model.predict(x_test, batch_size=BATCH_SIZE)
+y_old = model.predict(x_old, batch_size=BATCH_SIZE)
 
 xc = range(NUM_EPOCHS)
 plt.figure(1, figsize=(7, 5))
