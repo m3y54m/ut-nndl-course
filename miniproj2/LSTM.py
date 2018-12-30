@@ -12,10 +12,10 @@ IN this part data for test, validation and train is preperd.
 # data format is : pollution  ,dew  ,temp  , press ,wnd_dir , wnd_spd , snow , rain
 # total data =43000
 # per day and week = 43000/24*7 =250
-count = 1                       # if 1 all data, if 24 per day, if 24*7 per day & week
-train_c = 7000
-val_c = 1000
-test_c = 2000
+SAMPLE_RATE = 1                       # if 1 all data, if 24 per day, if 24*7 per day & week
+TRAIN_SIZE = 7000
+VAL_SIZE = 1000
+TEST_SIZE = 2000
 data = np.load('polution_dataSet.npy')
 x_train = []
 y_train = []
@@ -24,24 +24,23 @@ y_val = []
 x_test = []
 y_test = []
 
-week = 8            # sample count for prediction
-hour = 2            # which hour data ? (0-23) (not important)
+TIMESTEPS = 24            # sample count for prediction
 
-for i in range(train_c):
-    x_train.append(np.array(data[i*count+hour:i*count+week+hour]))
-    y_train.append(np.array(data[i*count+week+hour, 0]))
+for i in range(TRAIN_SIZE):
+    x_train.append(np.array(data[i*SAMPLE_RATE:i*SAMPLE_RATE+TIMESTEPS]))
+    y_train.append(np.array(data[i*SAMPLE_RATE+TIMESTEPS, 0]))
 x_train = np.array(x_train)
 y_train = np.array(y_train)
 
-for i in range(train_c, train_c+val_c):
-    x_val.append(np.array(data[i*count+hour:i*count+week+hour]))
-    y_val.append(np.array(data[i*count+week+hour, 0]))
+for i in range(TRAIN_SIZE, TRAIN_SIZE+VAL_SIZE):
+    x_val.append(np.array(data[i*SAMPLE_RATE:i*SAMPLE_RATE+TIMESTEPS]))
+    y_val.append(np.array(data[i*SAMPLE_RATE+TIMESTEPS, 0]))
 x_val = np.array(x_val)
 y_val = np.array(y_val)
 
-for i in range(train_c+val_c, train_c+val_c+test_c):
-    x_test.append(np.array(data[i*count+hour:i*count+week+hour]))
-    y_test.append(np.array(data[i*count+week+hour, 0]))
+for i in range(TRAIN_SIZE+VAL_SIZE, TRAIN_SIZE+VAL_SIZE+TEST_SIZE):
+    x_test.append(np.array(data[i*SAMPLE_RATE:i*SAMPLE_RATE+TIMESTEPS]))
+    y_test.append(np.array(data[i*SAMPLE_RATE+TIMESTEPS, 0]))
 x_test = np.array(x_test)
 y_test = np.array(y_test)
 y_total = np.concatenate([y_train, y_val, y_test], axis=None)
@@ -57,7 +56,7 @@ hidden_size = 40
 
 # keras modeling
 model = Sequential()
-model.add(LSTM(hidden_size,  input_shape=(week, 8), return_sequences=True,activation='tanh', recurrent_activation='hard_sigmoid', use_bias=True, dropout=0.0, recurrent_dropout=0.0))
+model.add(LSTM(hidden_size,  input_shape=(TIMESTEPS, 8), return_sequences=True,activation='tanh', recurrent_activation='hard_sigmoid', use_bias=True, dropout=0.0, recurrent_dropout=0.0))
 model.add(LSTM(hidden_size, return_sequences=False,activation='tanh', recurrent_activation='hard_sigmoid', use_bias=True, dropout=0.0, recurrent_dropout=0.0))
 # model.add(Flatten())
 model.add(Dense(1))
@@ -85,9 +84,9 @@ y_old = model.predict(x_old, batch_size=batch_size)
 xc = range(n_epochs)
 plt.figure(1, figsize=(7, 5))
 plt.subplot(211)
-plt.plot(range(0, train_c+val_c), y_old, c='r', linewidth=3.0)
-plt.plot(range(train_c+val_c, train_c+val_c+test_c), y_pred, c='b', linewidth=3.0)
-plt.plot(range(0, train_c+val_c+test_c), y_total, 'c')
+plt.plot(range(0, TRAIN_SIZE+VAL_SIZE), y_old, c='r', linewidth=3.0)
+plt.plot(range(TRAIN_SIZE+VAL_SIZE, TRAIN_SIZE+VAL_SIZE+TEST_SIZE), y_pred, c='b', linewidth=3.0)
+plt.plot(range(0, TRAIN_SIZE+VAL_SIZE+TEST_SIZE), y_total, 'c')
 plt.xlabel('data')
 plt.ylabel('value')
 plt.title('LSTM ')
@@ -97,8 +96,8 @@ plt.style.use(['classic'])
 
 
 plt.subplot(212)
-plt.plot(range(train_c+val_c, train_c+val_c+test_c), y_pred, 'b', linewidth=3.0)
-plt.plot(range(train_c+val_c, train_c+val_c+test_c), y_total[train_c+val_c:train_c+val_c+test_c], 'c')
+plt.plot(range(TRAIN_SIZE+VAL_SIZE, TRAIN_SIZE+VAL_SIZE+TEST_SIZE), y_pred, 'b', linewidth=3.0)
+plt.plot(range(TRAIN_SIZE+VAL_SIZE, TRAIN_SIZE+VAL_SIZE+TEST_SIZE), y_total[TRAIN_SIZE+VAL_SIZE:TRAIN_SIZE+VAL_SIZE+TEST_SIZE], 'c')
 plt.xlabel('data')
 plt.ylabel('value')
 plt.title('value')
