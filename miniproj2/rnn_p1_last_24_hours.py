@@ -144,7 +144,7 @@ model.summary()
 history = model.fit(x_train, y_train, batch_size=BATCH_SIZE, epochs=NUM_EPOCHS, verbose=1, validation_data=(x_val, y_val))
 
 
-# In[13]:
+# In[18]:
 
 
 plt.figure(1, figsize=(7, 7), dpi=100)
@@ -155,7 +155,7 @@ plt.xticks(np.arange(1, NUM_EPOCHS+1, 1, dtype=int))
 plt.xlim(1, NUM_EPOCHS)
 plt.xlabel('Epochs')
 plt.ylabel('Loss')
-plt.title('Loss results for RNN with 7 timesteps (days) predicting future 1 day', fontsize=11)
+plt.title('Loss results for RNN with 24 timesteps (hours) predicting future 1 hour', fontsize=11)
 plt.legend()
 plt.show()
 

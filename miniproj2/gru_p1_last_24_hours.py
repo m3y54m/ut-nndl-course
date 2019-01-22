@@ -120,7 +120,7 @@ plt.xticks(np.arange(1, NUM_EPOCHS+1, 1, dtype=int))
 plt.xlim(1, NUM_EPOCHS)
 plt.xlabel('Epochs')
 plt.ylabel('Loss')
-plt.title('Loss results for GRU with 7 timesteps (days) predicting future 1 day', fontsize=11)
+plt.title('Loss results for GRU with 24 timesteps (hours) predicting future 1 hour', fontsize=11)
 plt.legend()
 plt.show()
 
